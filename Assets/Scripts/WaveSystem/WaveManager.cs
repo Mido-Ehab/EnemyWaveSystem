@@ -24,6 +24,7 @@ public class WaveManager : MonoBehaviour
     private int totalEnemiesToSpawn;
     private int enemiesKilled = 0;
 
+    // Ensures there is only one instance of WaveManager in the scene
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -36,6 +37,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    // Initializes the wave system and caches manually placed enemies
     private void Start()
     {
         // Cache all manually placed enemies
@@ -100,6 +102,7 @@ public class WaveManager : MonoBehaviour
         yield return null;
     }
 
+    // Calculates the number of enemies to spawn for a given wave
     private int CalculateEnemyCount(int wave)
     {
         if (wave == 1) return 30;
@@ -108,6 +111,7 @@ public class WaveManager : MonoBehaviour
         return 70 + (wave - 3) * 10;
     }
 
+    // Handles logic when an enemy is killed
     public void OnEnemyKilled()
     {
         enemiesKilled++;
@@ -118,6 +122,7 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    // Waits for a delay before starting the next wave
     private IEnumerator NextWaveAfterDelay()
     {
         yield return new WaitForSeconds(delayBetweenWaves);
@@ -130,19 +135,24 @@ public class WaveManager : MonoBehaviour
 
     #region UI Ref
 
+    // Returns the current wave number
     public int GetCurrentWave() => currentWave;
+    // Returns the count of active enemies
     public int GetActiveEnemyCount() => activeEnemies.Count;
+    // Removes an enemy from the active enemies list
     public void RemoveEnemy(GameObject enemy)
     {
         activeEnemies.Remove(enemy);
     }
     public bool IsWaveRunning { get; private set; } = true;
 
+    // Stops the wave system
     public void StopWave()
     {
         IsWaveRunning = false;
     }
 
+    // Resumes the wave system
     public void ResumeWave()
     {
         IsWaveRunning = true;
@@ -155,6 +165,7 @@ public class WaveManager : MonoBehaviour
             return;
     }
 
+    // Forces the next wave to start immediately
     public void ForceNextWave()
     {
         StopAllCoroutines();
@@ -162,6 +173,7 @@ public class WaveManager : MonoBehaviour
         StartCoroutine(StartWave());
     }
 
+    // Disables all active enemies and prepares for the next wave
     public void KillAllEnemies()
     {
         foreach (var enemy in activeEnemies)

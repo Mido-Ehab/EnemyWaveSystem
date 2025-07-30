@@ -4,9 +4,11 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+
     public float moveSpeed = 3.5f;
     public bool grounded = false;
 
+ 
     public GameObject Player;
 
     public NavMeshAgent navMeshAgent;
@@ -17,6 +19,7 @@ public class EnemyAI : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
+    // Called on the first frame - sets up player, speed, and state
     private void Start()
     {
         Player = GameObject.FindWithTag("Player");
@@ -24,6 +27,7 @@ public class EnemyAI : MonoBehaviour
         animator = GetComponent<Animator>();
         ChangeState(new DetectionState());
     }
+    // Changes the current enemy state to a new one
     public void ChangeState(IEnemyStates newState)
     {
         _currentState?.ExitState(this);
@@ -31,18 +35,10 @@ public class EnemyAI : MonoBehaviour
         _currentState?.EnterState(this);
     }
 
-        private void Update()
-        {
-     
-            if (grounded)
-            {
-                navMeshAgent.enabled = true;
-                ChangeState(new DetectionState());
-            }
-          
-       
-
-        _currentState?.UpdateState(this);
+    // Called every frame - updates the current state behavior
+    private void Update()
+    {  
+             _currentState?.UpdateState(this);
     }
 
 }

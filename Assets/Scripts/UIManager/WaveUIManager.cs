@@ -18,6 +18,7 @@ public class WaveUIManager : MonoBehaviour
 
     void Start()
     {
+        // Assign button click listeners
         stopResumeButton.onClick.AddListener(TogglePauseWave);
         nextWaveButton.onClick.AddListener(() => waveManager.ForceNextWave());
         killAllButton.onClick.AddListener(() => waveManager.KillAllEnemies());
@@ -25,6 +26,7 @@ public class WaveUIManager : MonoBehaviour
 
     void Update()
     {
+        // Update UI elements
         waveText.text = "Wave: " + waveManager.GetCurrentWave();
         enemyCountText.text = "Enemies: " + waveManager.GetActiveEnemyCount();
         fpsText.text = $"FPS: {(1f / Time.unscaledDeltaTime):F1}";

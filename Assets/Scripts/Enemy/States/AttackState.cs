@@ -3,15 +3,14 @@ using UnityEngine;
 public class AttackState : IEnemyStates
 {
     private Transform player;
-    private float attackCooldown = 1.5f;
-    private float lastAttackTime;
+    private float attackCooldown = 1.5f;// Time between attacks
+    private float lastAttackTime;// Timestamp of last attack
 
     public void EnterState(EnemyAI enemy)
     {
         player =enemy.Player.transform;
         enemy.navMeshAgent.ResetPath();
         enemy.animator.SetTrigger("attack");
-        Debug.Log("Entered Attack State");
     }
 
     public void UpdateState(EnemyAI enemy)
@@ -26,6 +25,7 @@ public class AttackState : IEnemyStates
             return;
         }
 
+        // Attack only if cooldown has passed
         if (Time.time - lastAttackTime >= attackCooldown)
         {
             lastAttackTime = Time.time;
@@ -33,11 +33,12 @@ public class AttackState : IEnemyStates
            
         }
 
+        // Keep Rotating to face the player
         enemy.transform.LookAt(new Vector3(player.position.x, enemy.transform.position.y, player.position.z));
     }
 
     public void ExitState(EnemyAI enemy)
     {
-        Debug.Log("Exiting Attack State");
+      
     }
 }
